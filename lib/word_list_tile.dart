@@ -12,15 +12,18 @@ class WordListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final NoteBloc _noteBloc = BlocProvider.of<NoteBloc>(context);
 
-    return ListTile(
-      title: Text(word),
-      trailing: GestureDetector(
-        onTap: () async{
-           await _noteBloc.add(DeleteAWord(word: word));
-        },
-          child: Icon(
-        Icons.delete,
-      )),
+    return Padding(
+      padding: const EdgeInsets.all(18.0),
+      child: ListTile(
+        title: Text(word),
+        trailing: GestureDetector(
+          onTap: () async{
+             await _noteBloc.add(DeleteAWord(word: word));
+          },
+            child: Icon(
+          Icons.delete,
+        )),
+      ),
     );
   }
 }

@@ -31,37 +31,24 @@ class SamsungNotes extends StatelessWidget {
         backgroundColor: Colors.amberAccent,
         title: Text('SAMSUNG NOTES'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          BlocBuilder<NoteBloc, List<String>>(
-            bloc: BlocProvider.of<NoteBloc>(context),
-            condition: (currentState, nextState) => currentState!=nextState,
-            builder: (context, wordList) {
-              return wordList.length > 0
-                  ? WordListBuilder(
-                      wordList: wordList,
-                    )
-                  : Container();
-            },
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(right: 18.0, bottom: 18.0),
-                child: FloatingActionButton(
-                  backgroundColor: Colors.amberAccent,
-                  child: Icon(Icons.add),
-                  onPressed: () => showDialog<void>(
-                      context: context,
-                      builder: (context) => WordEnterBar()),
-                ),
-              ),
-            ],
-          )
-        ],
+      body: BlocBuilder<NoteBloc, List<String>>(
+        bloc: BlocProvider.of<NoteBloc>(context),
+        condition: (currentState, nextState) => currentState!=nextState,
+        builder: (context, wordList) {
+          return wordList.length > 0
+              ? WordListBuilder(
+                  wordList: wordList,
+                )
+              : Container();
+          },
       ),
+    floatingActionButton: FloatingActionButton(
+      backgroundColor: Colors.amberAccent,
+      child: Icon(Icons.add),
+      onPressed: () => showDialog<void>(
+          context: context,
+          builder: (context) => WordEnterBar()),
+    ),
     );
   }
 }
