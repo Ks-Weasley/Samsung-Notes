@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:samsungnotes/bloc/notes_bloc.dart';
-import 'package:samsungnotes/bloc/notes_events.dart';
 import 'package:samsungnotes/word_enter_bar.dart';
 import 'package:samsungnotes/word_list_builder.dart';
+
+import 'bloc/notes_bloc.dart';
 
 void main() => runApp(MyApp());
 
@@ -26,29 +27,38 @@ class MyApp extends StatelessWidget {
 class SamsungNotes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.amberAccent,
-        title: Text('SAMSUNG NOTES'),
-      ),
-      body: BlocBuilder<NoteBloc, List<String>>(
-        bloc: BlocProvider.of<NoteBloc>(context),
-        condition: (currentState, nextState) => currentState!=nextState,
-        builder: (context, wordList) {
-          return wordList.length > 0
+    NoteBloc _bloc = BlocProvider.of<NoteBloc>(context);
+    return BlocBuilder<NoteBloc, List<String>>(
+      bloc: _bloc,
+      condition: (currentState, nextState) => currentState != nextState,
+      builder: (context, wordList) {
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.amberAccent,
+            title: Text('SAMSUNG NOTES'),
+          ),
+          body: wordList.length > 0
               ? WordListBuilder(
                   wordList: wordList,
                 )
-              : Container();
-          },
+              : Container(),
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: Colors.amberAccent,
+            child: Icon(Icons.add),
+            onPressed: () => buildShowDialog(context, _bloc),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> buildShowDialog(BuildContext context, NoteBloc noteBloc) {
+    return showDialog<void>(
+      context: context,
+      builder: (context) => BlocProvider.value(
+        value: noteBloc,
+        child: WordEnterBar(),
       ),
-    floatingActionButton: FloatingActionButton(
-      backgroundColor: Colors.amberAccent,
-      child: Icon(Icons.add),
-      onPressed: () => showDialog<void>(
-          context: context,
-          builder: (context) => WordEnterBar()),
-    ),
     );
   }
 }
