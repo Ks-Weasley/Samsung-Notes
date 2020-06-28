@@ -17,8 +17,8 @@ class WordListTile extends StatelessWidget {
       child: ListTile(
         title: Text(word),
         trailing: GestureDetector(
-          onTap: () async{
-             await _noteBloc.add(DeleteAWord(word: word));
+          onTap: () {
+              _noteBloc.add(DeleteAWord(word: word));
           },
             child: Icon(
           Icons.delete,

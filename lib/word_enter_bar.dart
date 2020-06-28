@@ -6,15 +6,12 @@ import 'bloc/notes_events.dart';
 
 class WordEnterBar extends StatelessWidget {
   String word;
-  final GlobalKey _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     final NoteBloc _noteBloc = BlocProvider.of<NoteBloc>(context);
-    return AlertDialog(
-      title: Text('Enter a word'),
-      content: myForm(_noteBloc),
-    );
+    return  myForm(_noteBloc);
   }
 
   Widget myForm(NoteBloc _noteBloc) {
@@ -27,14 +24,16 @@ class WordEnterBar extends StatelessWidget {
             onChanged: (val) {
               word = val;
             },
+            validator: (val) => val.isEmpty ? 'enter a word' : null,
           ),
           SizedBox(
             height: 20.0,
           ),
-          FlatButton(
+          RaisedButton(
               child: Text('Submit'),
               onPressed: () {
-                _noteBloc.add(AddAWord(word: word));
+                if(_formKey.currentState.validate())
+                  _noteBloc.add(AddAWord(word: word));
               })
         ],
       ),

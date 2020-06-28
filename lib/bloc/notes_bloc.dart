@@ -9,7 +9,7 @@ class NoteBloc extends Bloc<NoteEvents, List<String>> {
 
   @override
   // TODO: implement initialState
-  List<String> get initialState => [];
+  List<String> get initialState => [] ;
 
   @override
   Stream<List<String>> mapEventToState(NoteEvents event) async* {
@@ -17,20 +17,13 @@ class NoteBloc extends Bloc<NoteEvents, List<String>> {
     if (event is AddAWord) {
       if (checkRedundancy(state, event.word) == false) {
         state.add(event.word);
-        yield state;
-      } else
-        yield ['Redundant word!'];
+      }
     } else if (event is DeleteAWord) {
       if (checkRedundancy(state, event.word) == true) {
         state.remove(event.word);
-        yield state;
-      }else yield ['Word not found'];
-    } else if (event is FindAWord) {
-      if (checkRedundancy(state, event.word) == true)
-        yield state;
-      else
-        yield ['Word not found'];
-    }
+       }
+      }
+      yield state;
   }
 
   bool checkRedundancy(List<String> state, String word) {

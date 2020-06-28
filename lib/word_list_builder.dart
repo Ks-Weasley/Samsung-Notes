@@ -9,8 +9,15 @@ class WordListBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
         itemCount: wordList.length,
-        itemBuilder: (context, index){
-          return WordListTile(word: wordList[index]);
+        itemBuilder: (BuildContext context, int index){
+          return Column(
+            children: <Widget>[
+              WordListTile(word: wordList[index]),
+          Divider(
+          thickness: 2.0,
+           color: Colors.amberAccent,
+          )],
+          );
         });
   }
 }
