@@ -4,17 +4,19 @@ import 'package:samsungnotes/bloc/notes_bloc.dart';
 
 import 'bloc/notes_events.dart';
 
-class WordEnterBar extends StatelessWidget {
+class WordEnterBar extends StatefulWidget {
+  @override
+  _WordEnterBarState createState() => _WordEnterBarState();
+}
+
+class _WordEnterBarState extends State<WordEnterBar> {
   String word;
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     final NoteBloc _noteBloc = BlocProvider.of<NoteBloc>(context);
-    return  myForm(_noteBloc);
-  }
-
-  Widget myForm(NoteBloc _noteBloc) {
     return Form(
       key: _formKey,
       child: Column(
@@ -32,8 +34,10 @@ class WordEnterBar extends StatelessWidget {
           RaisedButton(
               child: Text('Submit'),
               onPressed: () {
-                if(_formKey.currentState.validate())
+                if (_formKey.currentState.validate()) {
                   _noteBloc.add(AddAWord(word: word));
+                  Navigator.of(context).pop();
+                }
               })
         ],
       ),

@@ -17,12 +17,12 @@ class WordListTile extends StatelessWidget {
       child: ListTile(
         title: Text(word),
         trailing: GestureDetector(
-          onTap: () {
+            onTap: () {
               _noteBloc.add(DeleteAWord(word: word));
-          },
+            },
             child: Icon(
-          Icons.delete,
-        )),
+              Icons.delete,
+            )),
       ),
     );
   }

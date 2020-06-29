@@ -25,44 +25,41 @@ class MyApp extends StatelessWidget {
 }
 
 class SamsungNotes extends StatelessWidget {
+  Future<void> _showBottomSheet(BuildContext context) async {
+    await showModalBottomSheet<bool>(
+        context: context,
+        builder: (ctx) {
+          return Container(
+            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+            child: BlocProvider<NoteBloc>.value(
+              value: context.bloc<NoteBloc>(),
+              child: WordEnterBar(),
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
-    NoteBloc _bloc = BlocProvider.of<NoteBloc>(context);
-
-    void _showBottomSheet() {
-      showModalBottomSheet<void>(
-          context: context,
-          builder: (context) {
-            return Container(
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-              child: BlocProvider.value(
-                value: _bloc,
-                child: WordEnterBar(),
-              ),
-            );
-          });
-    }
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.amberAccent,
         title: Text('SAMSUNG NOTES'),
       ),
       body: BlocBuilder<NoteBloc, List<String>>(
-          bloc: _bloc,
-          // condition: (currentState, nextState) => currentState!=nextState,
-          builder: (events, state) {
-            return state.length > 0
-                ? WordListBuilder(
-                    wordList: state,
-                  )
-                : Container();
-          }),
+        builder: (ctx, words) {
+          return WordListBuilder(
+            wordList: words,
+          );
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         tooltip: 'Add a word',
         backgroundColor: Colors.amberAccent,
         child: Icon(Icons.add),
-        onPressed: () => _showBottomSheet(),
+        onPressed: () {
+          _showBottomSheet(context);
+        },
       ),
     );
   }
