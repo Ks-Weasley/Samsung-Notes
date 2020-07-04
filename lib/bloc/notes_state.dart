@@ -1,14 +1,18 @@
-abstract class NoteState {
-  @override
-  // TODO: implement props
-  List<Object> get props => [];
+class NoteState {
+  NoteState({this.words});
+
+  List<String> words;
 }
 
-class Empty extends NoteState {}
+class Empty extends NoteState {
+  void initialState(){
+    super.words = [];
+  }
+}
 
-class Redundant extends NoteState {}
+class WordFound extends NoteState {}
 
-class NotRedundant extends NoteState {}
+class WordNotFound extends NoteState {}
 
 class SuccessfulUpdate extends NoteState {}
 

@@ -1,15 +1,15 @@
 class Notes {
   List<String> words;
 
-  void NewWord(String newWord) {
+  void newWord(String newWord) {
     words.add(newWord);
   }
 
-  bool FindWord(String findWord) {
+  bool findWord(String findWord) {
     return words.contains(findWord);
   }
 
-  Future<bool> ClearList() async {
+  Future<bool> clearList() async {
     await Future<Duration>.delayed(const Duration(seconds: 1));
     words.clear();
     return true;

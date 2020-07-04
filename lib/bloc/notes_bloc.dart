@@ -1,31 +1,37 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:samsungnotes/bloc/notes_events.dart';
+import 'package:samsungnotes/bloc/notes_state.dart';
 
-class NoteBloc extends Bloc<NoteEvents, List<String>> {
+class NoteBloc extends Bloc<NoteEvents, NoteState> {
   @override
   // TODO: implement initialState
-  List<String> get initialState => <String>[];
+  NoteState get initialState => Empty()..initialState();
 
   @override
-  List<String> get state => List.from(super.state);
+  NoteState get state => super.state;
 
   @override
-  Stream<List<String>> mapEventToState(NoteEvents event) async* {
-    final state = this.state;
+  Stream<NoteState> mapEventToState(NoteEvents event) async* {
     if (event is AddAWord) {
-      if (checkRedundancy(state, event.word) == false) {
-        state.add(event.word);
-        yield state;
+      if (checkRedundancy(state.words, event.word) == false) {
+        yield WordNotFound();
+        state.words.add(event.word);
+        yield SuccessfulUpdate();
       } else {
-        print('Word is present');
+        yield WordFound();
+        yield UnsuccessfulUpdate();
       }
     } else if (event is DeleteAWord) {
-      if (checkRedundancy(state, event.word) == true) {
-        state.remove(event.word);
-        yield state;
+      if (checkRedundancy(state.words, event.word) == true) {
+        yield WordFound();
+        state.words.remove(event.word);
+        yield SuccessfulUpdate();
+      }
+      else {
+        yield WordNotFound();
+        yield UnsuccessfulUpdate();
       }
     }
-    yield state;
   }
 
   bool checkRedundancy(List<String> state, String word) {

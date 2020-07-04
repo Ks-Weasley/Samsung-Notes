@@ -1,26 +1,26 @@
 
 import 'package:meta/meta.dart';
 
-abstract class NoteEvents{
-
-}
+abstract class NoteEvents{}
 
 class AddAWord extends NoteEvents{
-  final String word;
-
   AddAWord({@required this.word});
+
+  final String word;
 }
 
 class FindAWord extends NoteEvents{
-  final String word;
-
   FindAWord({@required this.word});
+
+  final String word;
 }
 
 class DeleteAWord extends NoteEvents{
-  final String word;
-
   DeleteAWord({@required this.word});
-
+  final String word;
 }
 class ClearTheList extends NoteEvents{}
+
+class Update extends NoteEvents{}
+
+class Search extends NoteEvents{}

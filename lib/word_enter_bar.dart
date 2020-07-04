@@ -22,17 +22,17 @@ class _WordEnterBarState extends State<WordEnterBar> {
       child: Column(
         children: <Widget>[
           TextFormField(
-            decoration: InputDecoration(labelText: 'enter a word'),
-            onChanged: (val) {
+            decoration: const InputDecoration(labelText: 'enter a word'),
+            onChanged: (String val) {
               word = val;
             },
-            validator: (val) => val.isEmpty ? 'enter a word' : null,
+            validator: (String val) => val.isEmpty ? 'enter a word' : null,
           ),
-          SizedBox(
+          const SizedBox(
             height: 20.0,
           ),
           RaisedButton(
-              child: Text('Submit'),
+              child: const Text('Add'),
               onPressed: () {
                 if (_formKey.currentState.validate()) {
                   _noteBloc.add(AddAWord(word: word));

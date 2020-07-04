@@ -4,9 +4,9 @@ import 'package:samsungnotes/bloc/notes_bloc.dart';
 import 'package:samsungnotes/bloc/notes_events.dart';
 
 class WordListTile extends StatelessWidget {
-  final String word;
-
   const WordListTile({Key key, this.word}) : super(key: key);
+
+  final String word;
 
   @override
   Widget build(BuildContext context) {
