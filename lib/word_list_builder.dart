@@ -8,7 +8,7 @@ class WordListBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return wordList!=null ? ListView.builder(
         itemCount: wordList.length,
         itemBuilder: (BuildContext context, int index) {
           return Column(
@@ -20,6 +20,6 @@ class WordListBuilder extends StatelessWidget {
               )
             ],
           );
-        });
+        }): Container();
   }
 }

@@ -5,9 +5,8 @@ class NoteState {
 }
 
 class Empty extends NoteState {
-  void initialState(){
-    super.words = [];
-  }
+  Empty({List<String> words = const <String>[]});
+
 }
 
 class WordFound extends NoteState {}

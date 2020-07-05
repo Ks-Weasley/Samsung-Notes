@@ -44,11 +44,15 @@ class SamsungNotes extends StatelessWidget {
         });
   }
 
-  void buildBottomsnackBar(BuildContext context, String promptMessage) {
-    Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text(promptMessage),
-      duration: Duration(seconds: 2),
-    ));
+  Widget buildBottomsnackBar(BuildContext context, String promptMessage) {
+    return Builder(
+      builder: (context) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(promptMessage),
+        duration: Duration(seconds: 2),
+      ));
+    }
+    );
   }
 
   @override
@@ -62,18 +66,15 @@ class SamsungNotes extends StatelessWidget {
           builder: (BuildContext context, NoteState state) {
 
         if (state is WordFound) buildBottomsnackBar(context, 'Word present');
-        else if (state is WordNotFound)
+        if (state is WordNotFound)
           buildBottomsnackBar(context, 'Word not present!');
-        else if (state is UnsuccessfulUpdate)
+        if (state is UnsuccessfulUpdate)
           buildBottomsnackBar(context, 'Update failed!');
-        else if (state is SuccessfulUpdate) {
+        if (state is SuccessfulUpdate)
           buildBottomsnackBar(context, 'Updated!');
-          return WordListBuilder(
-            wordList: state.words,
-          );
-        }
-        else
-          return Container();
+        return WordListBuilder(
+          wordList: state.words,
+        );
       }),
       floatingActionButton: FloatingActionButton(
         tooltip: 'Add a word',
