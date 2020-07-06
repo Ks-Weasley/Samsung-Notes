@@ -1,13 +1,6 @@
-class NoteState {
-  NoteState({this.words});
+abstract class NoteState {}
 
-  List<String> words;
-}
-
-class Empty extends NoteState {
-  Empty({List<String> words = const <String>[]});
-
-}
+class Empty extends NoteState {}
 
 class WordFound extends NoteState {}
 
@@ -16,3 +9,9 @@ class WordNotFound extends NoteState {}
 class SuccessfulUpdate extends NoteState {}
 
 class UnsuccessfulUpdate extends NoteState {}
+
+class DisplayWordsState extends NoteState {
+  DisplayWordsState({this.words});
+
+  final List<String> words;
+}

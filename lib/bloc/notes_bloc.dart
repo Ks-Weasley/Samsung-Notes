@@ -1,10 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:samsungnotes/bloc/notes_events.dart';
 import 'package:samsungnotes/bloc/notes_state.dart';
+import 'package:samsungnotes/repository/words_repo.dart';
 
 class NoteBloc extends Bloc<NoteEvents, NoteState> {
+  NoteBloc({this.repo});
+
+  final WordsRepository repo;
+
   @override
-  // TODO: implement initialState
   NoteState get initialState => Empty();
 
   @override
@@ -12,32 +16,28 @@ class NoteBloc extends Bloc<NoteEvents, NoteState> {
 
   @override
   Stream<NoteState> mapEventToState(NoteEvents event) async* {
-    if(state is Empty){
-      state.words = <String>[];
-    }
     if (event is AddAWord) {
-      if (checkRedundancy(state.words, event.word) == false) {
+      if (!repo.checkRedundancy(event.word)) {
         yield WordNotFound();
-        state.words.add(event.word);
+        repo.words.add(event.word);
         yield SuccessfulUpdate();
+        yield DisplayWordsState(words: repo.words);
       } else {
         yield WordFound();
         yield UnsuccessfulUpdate();
+        yield DisplayWordsState(words: repo.words);
       }
     } else if (event is DeleteAWord) {
-      if (checkRedundancy(state.words, event.word) == true) {
+      if (repo.checkRedundancy(event.word)) {
         yield WordFound();
-        state.words.remove(event.word);
+        repo.deleteWord(event.word);
         yield SuccessfulUpdate();
-      }
-      else {
+        yield DisplayWordsState(words: repo.words);
+      } else {
         yield WordNotFound();
         yield UnsuccessfulUpdate();
+        yield DisplayWordsState(words: repo.words);
       }
     }
-  }
-
-  bool checkRedundancy(List<String> state, String word) {
-    return state.contains(word);
   }
 }
