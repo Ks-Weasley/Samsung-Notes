@@ -81,8 +81,12 @@ class SamsungNotes extends StatelessWidget {
         child: BlocBuilder<NoteBloc, NoteState>(
           builder: (BuildContext context, NoteState state) {
             if (state is DisplayWordsState) {
-              return WordListBuilder(
+              return state.words.length>0 ? WordListBuilder(
                 wordList: state.words,
+              ):Center(
+                child: Container(
+                  child: Text('No Words yet'),
+                ),
               );
             } else
               return Center(
