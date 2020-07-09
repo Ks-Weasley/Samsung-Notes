@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:samsungnotes/bloc/notes_events.dart';
-import 'package:samsungnotes/bloc/notes_state.dart';
+import 'package:samsungnotes/NoteBloc/notes_events.dart';
+import 'package:samsungnotes/NoteBloc/notes_state.dart';
 import 'package:samsungnotes/repository/words_repo.dart';
 
 class NoteBloc extends Bloc<NoteEvents, NoteState> {

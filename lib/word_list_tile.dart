@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:samsungnotes/bloc/notes_bloc.dart';
-import 'package:samsungnotes/bloc/notes_events.dart';
+import 'package:samsungnotes/NoteBloc/notes_bloc.dart';
+import 'package:samsungnotes/NoteBloc/notes_events.dart';
 
 class WordListTile extends StatelessWidget {
   const WordListTile({Key key, this.word}) : super(key: key);

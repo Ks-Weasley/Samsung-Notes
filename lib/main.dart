@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:samsungnotes/bloc/notes_bloc.dart';
-import 'package:samsungnotes/bloc/notes_state.dart';
+import 'package:samsungnotes/NoteBloc/notes_bloc.dart';
+import 'package:samsungnotes/NoteBloc/notes_state.dart';
 import 'package:samsungnotes/bloc_delegate.dart';
 import 'package:samsungnotes/repository/words_repo.dart';
 import 'package:samsungnotes/word_enter_bar.dart';
 import 'package:samsungnotes/word_list_builder.dart';
 
-import 'bloc/notes_bloc.dart';
-import 'bloc/notes_events.dart';
+import 'NoteBloc/notes_events.dart';
 
 void main() => runApp(MyApp());
 
@@ -94,7 +93,7 @@ class _SamsungNotesState extends State<SamsungNotes> {
         backgroundColor: Colors.amberAccent,
         title: appBarTitle,
         actions: <Widget>[
-          BlocBuilder<NoteBloc, NoteState>(builder: (context, NoteState state) {
+          BlocBuilder<NoteBloc, NoteState>(builder: (BuildContext context, NoteState state) {
             if (state is Searching)
               return FlatButton(
                   shape: const CircleBorder(side: BorderSide.none),
@@ -128,7 +127,7 @@ class _SamsungNotesState extends State<SamsungNotes> {
         ],
       ),
       body: BlocListener<NoteBloc, NoteState>(
-        listener: (context, NoteState state) {
+        listener: (BuildContext context, NoteState state) {
           if (state is WordFound) {
             buildBottomSnackBar('Word present');
           }
