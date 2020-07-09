@@ -19,7 +19,7 @@ class NoteBloc extends Bloc<NoteEvents, NoteState> {
     if (event is AddAWord) {
       if (!repo.checkRedundancy(event.word)) {
         yield WordNotFound();
-        repo.words.add(event.word);
+        repo.addWord(event.word);
         yield SuccessfulUpdate();
         yield DisplayWordsState(words: repo.words);
       } else {
@@ -38,6 +38,12 @@ class NoteBloc extends Bloc<NoteEvents, NoteState> {
         yield UnsuccessfulUpdate();
         yield DisplayWordsState(words: repo.words);
       }
+    }else if(event is SearchAWord){
+      final List<String> result= repo.matchingWords(event.word);
+      yield Searching(words: result);
+    }else{
+      yield DisplayWordsState(words: repo.words);
     }
   }
+
 }

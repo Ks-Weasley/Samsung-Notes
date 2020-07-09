@@ -15,3 +15,8 @@ class DisplayWordsState extends NoteState {
 
   final List<String> words;
 }
+class Searching extends NoteState{
+  Searching({this.words});
+
+  final List<String> words;
+}

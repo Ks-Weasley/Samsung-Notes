@@ -21,6 +21,9 @@ class DeleteAWord extends NoteEvents{
 }
 class ClearTheList extends NoteEvents{}
 
-class Update extends NoteEvents{}
+class SearchAWord extends NoteEvents{
+  SearchAWord({@required this.word});
 
-class Search extends NoteEvents{}
+  final String word;
+}
+class SearchDone extends NoteEvents{}
