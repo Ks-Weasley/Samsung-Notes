@@ -34,17 +34,16 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     BlocSupervisor.delegate = NoteBlocDelegate();
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
         home: BlocProvider<NoteBloc>(
-          create: (BuildContext context) => NoteBloc(
-            repo: WordsRepository(<String>[]),
-          ),
-          child: SamsungNotes(),
-        ));
+            create: (BuildContext context) => NoteBloc(
+              repo: WordsRepository(<String>[]),
+            ),
+        child: SamsungNotes(),),);
   }
 }
 
@@ -76,7 +75,7 @@ class _SamsungNotesState extends State<SamsungNotes> {
   void buildBottomSnackBar(String promptMessage) {
     _scaffoldKey.currentState.showSnackBar(SnackBar(
       content: Text(promptMessage),
-      duration: const Duration(seconds: 2),
+      duration: const Duration(milliseconds: 70),
     ));
   }
 
@@ -93,7 +92,8 @@ class _SamsungNotesState extends State<SamsungNotes> {
         backgroundColor: Colors.amberAccent,
         title: appBarTitle,
         actions: <Widget>[
-          BlocBuilder<NoteBloc, NoteState>(builder: (BuildContext context, NoteState state) {
+          BlocBuilder<NoteBloc, NoteState>(
+              builder: (BuildContext context, NoteState state) {
             if (state is Searching)
               return FlatButton(
                   shape: const CircleBorder(side: BorderSide.none),

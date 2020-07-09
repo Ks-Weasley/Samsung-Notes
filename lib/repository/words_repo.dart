@@ -4,7 +4,7 @@ class WordsRepository {
   final List<String> words;
 
   void addWord(String word) {
-    words.add(word);
+    words.add(word.trim());
   }
 
   void deleteWord(String word) {
