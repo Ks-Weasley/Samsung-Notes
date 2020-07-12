@@ -1,8 +1,6 @@
 import 'package:coffeebrewbloc/authenticate/authenticate_events.dart';
 import 'package:coffeebrewbloc/authenticate/authenticate_states.dart';
 import 'package:coffeebrewbloc/authenticate/user.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -34,7 +32,7 @@ class AuthenticationBloc
       final result =
           await registerWithEmailAndPassword(event.email, event.password);
       if (result == null) {
-        yield Unauthenticated('Failed Login');
+        yield Unauthenticated('Failed register!');
         yield Register();
       } else
         yield Authenticated(result.uid);
@@ -69,7 +67,7 @@ class AuthenticationBloc
     try {
       AuthResult result = await _auth.signInWithEmailAndPassword(
           email: email.trim(), password: password);
-      print(result.user);
+      print(result.user.toString());
       print('Sucess');
       return User(uid: result.user.uid);
     } catch (e) {

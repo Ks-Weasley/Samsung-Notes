@@ -10,7 +10,7 @@ class LogInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthenticationBloc _authenticationBloc =
-    BlocProvider.of<AuthenticationBloc>(context);
+        BlocProvider.of<AuthenticationBloc>(context);
     return Form(
       key: _formKey,
       child: Padding(
@@ -23,9 +23,11 @@ class LogInPage extends StatelessWidget {
                   hintText: 'Enter email', icon: Icon(Icons.email)),
               onChanged: (val) => email = val,
               validator: (val) =>
-              val.indexOf('@') == null ? 'Please enter an email' : null,
+                  val.isEmpty ? 'Please enter an email' : null,
             ),
-            SizedBox(height: 30.0,),
+            SizedBox(
+              height: 30.0,
+            ),
             TextFormField(
               decoration: new InputDecoration(
                 hintText: 'Enter password',
@@ -35,13 +37,16 @@ class LogInPage extends StatelessWidget {
               validator: (val) => val.isEmpty ? 'Please enter password' : null,
               obscureText: true,
             ),
-            SizedBox(height: 30.0,),
+            SizedBox(
+              height: 30.0,
+            ),
             RaisedButton(
               child: Text('Log In'),
               onPressed: () {
-                if(_formKey.currentState.validate())
+                if (_formKey.currentState.validate()) {
                   _authenticationBloc
                       .add(LogInEvent(email: email, password: password));
+                }
               },
             )
           ],

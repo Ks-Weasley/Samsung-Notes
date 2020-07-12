@@ -19,9 +19,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.cyan,
       ),
       home: BlocProvider(
         create: (context) => AuthenticationBloc(),
@@ -53,6 +54,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
+          backgroundColor: Colors.amberAccent,
           title: Text('Welcome!'),
           actions: <Widget>[
             BlocBuilder<AuthenticationBloc, AuthenticationStates>(
@@ -83,10 +85,11 @@ class _HomePageState extends State<HomePage> {
           },
           child: BlocBuilder<AuthenticationBloc, AuthenticationStates>(
               builder: (context, state) {
-            if (state is Loading) return LoadingIndicator();
-            if (state is Authenticated) return UserHomePage();
-            if (state is Register) return RegisterPage();
-            else return LogInPage();
+                if (state is Loading) return LoadingIndicator();
+                if (state is Authenticated) return UserHomePage();
+                if (state is Register) return RegisterPage();
+                if(state is LogIn) return LogInPage();
+                return Container();
           }),
         ));
   }

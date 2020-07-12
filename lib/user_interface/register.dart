@@ -10,7 +10,7 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthenticationBloc _authenticationBloc =
-    BlocProvider.of<AuthenticationBloc>(context);
+        BlocProvider.of<AuthenticationBloc>(context);
     return Form(
       key: _formKey,
       child: Padding(
@@ -23,25 +23,30 @@ class RegisterPage extends StatelessWidget {
                   hintText: 'Enter email', icon: Icon(Icons.email)),
               onChanged: (val) => email = val,
               validator: (val) =>
-              val.indexOf('@') == null ? 'Please enter an email' : null,
+                  val.isEmpty ? 'Please enter an email' : null,
             ),
-            SizedBox(height: 30.0,),
+            SizedBox(
+              height: 30.0,
+            ),
             TextFormField(
               decoration: new InputDecoration(
                 hintText: 'Enter password',
                 icon: Icon(Icons.lock),
               ),
               onChanged: (val) => password = val,
-              validator: (val) => val.isEmpty ? 'Please enter password' : null,
+              validator: (val) => val.length < 6 ? 'Please enter +6 chars password' : null,
               obscureText: true,
             ),
-            SizedBox(height: 30.0,),
+            SizedBox(
+              height: 30.0,
+            ),
             RaisedButton(
               child: Text('Register'),
               onPressed: () {
-                if(_formKey.currentState.validate())
+                if (_formKey.currentState.validate()) {
                   _authenticationBloc
                       .add(RegisterEvent(email: email, password: password));
+                }
               },
             )
           ],
