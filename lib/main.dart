@@ -24,8 +24,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.cyan,
       ),
-      home: BlocProvider(
-        create: (context) => AuthenticationBloc(),
+      home: BlocProvider<AuthenticationBloc>(
+        create: (BuildContext context) => AuthenticationBloc(),
         child: HomePage(),
       ),
     );
@@ -39,6 +39,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  String _scaffoldText = 'Welcome';
 
   void buildBottomSnackBar(String promptMessage) {
     _scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -49,48 +50,66 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    AuthenticationBloc _authenticationBloc =
-        BlocProvider.of<AuthenticationBloc>(context);
+    final AuthenticationBloc _authenticationBloc =
+    BlocProvider.of<AuthenticationBloc>(context);
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
           backgroundColor: Colors.amberAccent,
-          title: Text('Welcome!'),
+          title: Text(_scaffoldText),
           actions: <Widget>[
             BlocBuilder<AuthenticationBloc, AuthenticationStates>(
-                builder: (context, state) {
-              if (state is LogIn)
-                return FlatButton.icon(
-                    onPressed: () =>
-                        _authenticationBloc.add(Swap(showLogIn: false)),
-                    icon: Icon(Icons.person),
-                    label: Text('Register'));
-              else if (state is Register)
-                return FlatButton.icon(
-                    onPressed: () =>
-                        _authenticationBloc.add(Swap(showLogIn: true)),
-                    icon: Icon(Icons.person),
-                    label: Text('LogIn'));
-              else
-                return FlatButton.icon(
-                    onPressed: () => _authenticationBloc.add(Logout()),
-                    icon: Icon(Icons.person),
-                    label: Text('SignOut'));
-            })
+                builder: (BuildContext context, AuthenticationStates state) {
+                  if (state is LogIn)
+                    return FlatButton.icon(
+                        onPressed: () =>
+                            _authenticationBloc.add(Swap(showLogIn: false)),
+                        icon: Icon(Icons.person),
+                        label: const Text('Register'));
+                  else if (state is Register)
+                    return FlatButton.icon(
+                        onPressed: () =>
+                            _authenticationBloc.add(Swap(showLogIn: true)),
+                        icon: Icon(Icons.person),
+                        label: const Text('LogIn'));
+                  else if (state is Authenticated)
+                    return FlatButton.icon(
+                        onPressed: () {
+                          setState(() {
+                            _scaffoldText = 'Welcome!';
+                          });
+                          _authenticationBloc.add(Logout());
+                        },
+                        icon: Icon(Icons.person),
+                        label: const Text('SignOut'));
+                  return Container();
+                })
           ],
         ),
         body: BlocListener<AuthenticationBloc, AuthenticationStates>(
-          listener: (BuildContext context, AuthenticationStates state){
-            if (state is Unauthenticated) buildBottomSnackBar(state.error);
+          listener: (BuildContext context, AuthenticationStates state) {
+            if (state is Unauthenticated)
+              buildBottomSnackBar(state.error);
+
+            if (state is Authenticated)
+              setState(() {
+                _scaffoldText = 'HomePage: Hello User!';
+              });
           },
           child: BlocBuilder<AuthenticationBloc, AuthenticationStates>(
-              builder: (context, state) {
-                if (state is Loading) return LoadingIndicator();
-                if (state is Authenticated) return UserHomePage();
-                if (state is Register) return RegisterPage();
-                if(state is LogIn) return LogInPage();
+              builder: (BuildContext context, AuthenticationStates state) {
+                if (state is Initial)
+                  _authenticationBloc.add(GetDeviceUser());
+                if (state is Loading)
+                  return LoadingIndicator();
+                if (state is Authenticated)
+                  return UserHomePage();
+                if (state is Register)
+                  return RegisterPage();
+                if (state is LogIn)
+                  return LogInPage();
                 return Container();
-          }),
+              }),
         ));
   }
 }

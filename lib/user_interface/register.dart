@@ -3,8 +3,14 @@ import 'package:coffeebrewbloc/authenticate/authenticate_events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
+  @override
+  _RegisterPageState createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
   String email, password;
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -21,11 +27,11 @@ class RegisterPage extends StatelessWidget {
             TextFormField(
               decoration: new InputDecoration(
                   hintText: 'Enter email', icon: Icon(Icons.email)),
-              onChanged: (val) => email = val,
-              validator: (val) =>
+              onChanged: (String val) => email = val,
+              validator: (String val) =>
                   val.isEmpty ? 'Please enter an email' : null,
             ),
-            SizedBox(
+            const SizedBox(
               height: 30.0,
             ),
             TextFormField(
@@ -33,15 +39,15 @@ class RegisterPage extends StatelessWidget {
                 hintText: 'Enter password',
                 icon: Icon(Icons.lock),
               ),
-              onChanged: (val) => password = val,
-              validator: (val) => val.length < 6 ? 'Please enter +6 chars password' : null,
+              onChanged: (String val) => password = val,
+              validator: (String val) => val.length < 6 ? 'Please enter +6 chars password' : null,
               obscureText: true,
             ),
-            SizedBox(
+            const SizedBox(
               height: 30.0,
             ),
             RaisedButton(
-              child: Text('Register'),
+              child: const Text('Register'),
               onPressed: () {
                 if (_formKey.currentState.validate()) {
                   _authenticationBloc

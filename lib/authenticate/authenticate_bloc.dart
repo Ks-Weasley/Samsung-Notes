@@ -1,6 +1,5 @@
 import 'package:coffeebrewbloc/authenticate/authenticate_events.dart';
 import 'package:coffeebrewbloc/authenticate/authenticate_states.dart';
-import 'package:coffeebrewbloc/authenticate/user.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -10,83 +9,91 @@ class AuthenticationBloc
 
   @override
   // TODO: implement initialState
-  AuthenticationStates get initialState => LogIn();
+  AuthenticationStates get initialState => Initial();
 
   @override
   Stream<AuthenticationStates> mapEventToState(
       AuthenticationEvents event) async* {
     // TODO: implement mapEventToState
+    if (event is GetDeviceUser) {
+      final AuthenticationStates _authenticationResults = await loggedInUser();
+      yield _authenticationResults;
+    }
     if (event is LogInEvent) {
       yield Loading();
-      final result =
-          await signInWithEmailAndPassword(event.email, event.password);
-      if (result == null) {
-        yield Unauthenticated('Failed Login');
+      final AuthenticationStates result =
+      await signInWithEmailAndPassword(event.email, event.password);
+      yield result;
+      if (result is Unauthenticated)
         yield LogIn();
-
-      } else
-        yield Authenticated(result.uid);
     }
     if (event is RegisterEvent) {
       yield Loading();
-      final result =
-          await registerWithEmailAndPassword(event.email, event.password);
-      if (result == null) {
-        yield Unauthenticated('Failed register!');
+      final AuthenticationStates result =
+      await registerWithEmailAndPassword(event.email, event.password);
+      yield result;
+      if (result is Unauthenticated)
         yield Register();
-      } else
-        yield Authenticated(result.uid);
     }
-    if(event is Swap){
+
+    if (event is Swap) {
       yield event.showLogIn ? LogIn() : Register();
     }
-    if(event is Logout){
+    if (event is Logout) {
       yield Loading();
-      if(signOut() == null)
-       yield Unauthenticated('Falied Signing out');
+      if (signOut() == null)
+        yield Unauthenticated('Falied Signing out');
       else
         yield LogIn();
     }
   }
 
+  //for getting initial device user if already logged in
+  Future<AuthenticationStates> loggedInUser() async {
+    final FirebaseUser firebaseUser = await _auth.currentUser();
+    return firebaseUser == null ? LogIn() : Authenticated(firebaseUser.uid);
+  }
+
+
 //for anonymous entry for testing purposes
-  Future<User> signInAnonymously() async {
+  Future<AuthenticationStates> signInAnonymously() async {
     try {
-      AuthResult result = await _auth.signInAnonymously();
+      final AuthResult result = await _auth.signInAnonymously();
       print('Sucess');
       print(result.user);
-      return User(uid: result.user.uid);
+      return Authenticated(result.user.uid);
     } catch (e) {
       print(e.toString());
-      return null;
+      return Unauthenticated(e.message);
     }
   }
 
   //Signing in using email and password
-  Future<User> signInWithEmailAndPassword(String email, String password) async {
+  Future<AuthenticationStates> signInWithEmailAndPassword(String email,
+      String password) async {
     try {
-      AuthResult result = await _auth.signInWithEmailAndPassword(
+      final AuthResult result = await _auth.signInWithEmailAndPassword(
           email: email.trim(), password: password);
       print(result.user.toString());
       print('Sucess');
-      return User(uid: result.user.uid);
+      return Authenticated(result.user.uid);
     } catch (e) {
-      print(e.toString());
-      return null;
+      print(e.message);
+      return Unauthenticated(e.message);
     }
   }
 
-  Future<User> registerWithEmailAndPassword(
-      String email, String password) async {
+  Future<AuthenticationStates> registerWithEmailAndPassword(String email,
+      String password) async {
     try {
       final AuthResult result = await _auth.createUserWithEmailAndPassword(
           email: email.trim(), password: password);
       print('Sucess');
       print(result.user);
-      return User(uid: result.user.uid);
+      return Authenticated(result.user.uid);
     } catch (e) {
       print(e.toString());
-      return null;
+      return Unauthenticated(e.message);
     }
   }
 

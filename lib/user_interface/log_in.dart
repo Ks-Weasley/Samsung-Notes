@@ -3,8 +3,14 @@ import 'package:coffeebrewbloc/authenticate/authenticate_events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LogInPage extends StatelessWidget {
+class LogInPage extends StatefulWidget {
+  @override
+  _LogInPageState createState() => _LogInPageState();
+}
+
+class _LogInPageState extends State<LogInPage> {
   String email, password;
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -21,11 +27,11 @@ class LogInPage extends StatelessWidget {
             TextFormField(
               decoration: new InputDecoration(
                   hintText: 'Enter email', icon: Icon(Icons.email)),
-              onChanged: (val) => email = val,
-              validator: (val) =>
+              onChanged: (String val) => email = val,
+              validator: (String val) =>
                   val.isEmpty ? 'Please enter an email' : null,
             ),
-            SizedBox(
+            const SizedBox(
               height: 30.0,
             ),
             TextFormField(
@@ -33,15 +39,15 @@ class LogInPage extends StatelessWidget {
                 hintText: 'Enter password',
                 icon: Icon(Icons.lock),
               ),
-              onChanged: (val) => password = val,
-              validator: (val) => val.isEmpty ? 'Please enter password' : null,
+              onChanged: (String val) => password = val,
+              validator: (String val) => val.isEmpty ? 'Please enter password' : null,
               obscureText: true,
             ),
-            SizedBox(
+            const SizedBox(
               height: 30.0,
             ),
             RaisedButton(
-              child: Text('Log In'),
+              child: const Text('Log In'),
               onPressed: () {
                 if (_formKey.currentState.validate()) {
                   _authenticationBloc

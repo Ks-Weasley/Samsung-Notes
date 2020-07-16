@@ -5,18 +5,22 @@ class Initial extends AuthenticationStates{}
 class Loading extends AuthenticationStates{}
 
 class Authenticated extends AuthenticationStates{
+  Authenticated(this.uid);
+
   final String uid;
 
-  Authenticated(this.uid);
 }
 
 class Unauthenticated extends AuthenticationStates{
+  Unauthenticated(this.error);
+
   final String error;
 
-  Unauthenticated(this.error);
 }
 
 class LogIn extends AuthenticationStates{}
 
 class Register extends AuthenticationStates{}
+
+class SentEmailVerificationLink extends AuthenticationStates{}
 

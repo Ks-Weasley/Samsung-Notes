@@ -1,23 +1,28 @@
 class AuthenticationEvents{}
 
 class LogInEvent extends AuthenticationEvents{
+  LogInEvent({this.email, this.password});
+
   final String email;
   final String password;
 
-  LogInEvent({this.email, this.password});
 }
 
 class RegisterEvent extends AuthenticationEvents{
+  RegisterEvent({this.email, this.password});
+
   final String email;
   final String password;
 
-  RegisterEvent({this.email, this.password});
 
 }
 
 class Swap extends AuthenticationEvents{
+  Swap({this.showLogIn});
+
   final bool showLogIn;
 
-  Swap({this.showLogIn});
 }
 class Logout extends AuthenticationEvents{}
+
+class GetDeviceUser extends AuthenticationEvents{}
