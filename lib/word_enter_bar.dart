@@ -41,48 +41,54 @@ class _BuildDynamicPageState extends State<BuildDynamicPage> {
     final NoteBloc _noteBloc = BlocProvider.of<NoteBloc>(context);
     final SearchBloc _searchBloc = BlocProvider.of<SearchBloc>(context);
 
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: <Widget>[
-          Column(
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.only(left: 26.0, right: 26.0, top: 26.0, bottom: MediaQuery.of(context).viewInsets.bottom+26.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
             children: <Widget>[
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'enter a word'),
-                onChanged: (String val) {
-                  word = val;
-                  if(word.isEmpty)
-                    _searchBloc.add(se.SearchAWord(word: ' '));
-                  else
-                    _searchBloc.add(se.SearchAWord(word: word));
-                },
-                validator: (String val) => val.isEmpty ? 'enter a word' : null,
+              Column(
+                children: <Widget>[
+                  TextFormField(
+                    autofocus: true,
+                    decoration: const InputDecoration(labelText: 'enter a word'),
+                    onChanged: (String val) {
+                      word = val;
+                      if(word.isEmpty)
+                        _searchBloc.add(se.SearchAWord(word: ' '));
+                      else
+                        _searchBloc.add(se.SearchAWord(word: word));
+                    },
+                    validator: (String val) => val.isEmpty ? 'enter a word' : null,
+                  ),
+                  BlocBuilder<SearchBloc, SearchState>(
+                    builder: (BuildContext context, SearchState state) {
+                      if (state is Searching)
+                        return state.words.isNotEmpty? Container(
+                            height: 100.0,
+                            width: MediaQuery.of(context).size.width,
+                            child: searchListBuilder(wordList: state.words,)):
+                        Container();
+                      return Container();
+                    },
+                  )
+                ],
               ),
-              BlocBuilder<SearchBloc, SearchState>(
-                builder: (BuildContext context, SearchState state) {
-                  if (state is Searching)
-                    return state.words.isNotEmpty? Container(
-                        height: 100.0,
-                        width: MediaQuery.of(context).size.width,
-                        child: searchListBuilder(wordList: state.words,)):
-                    Container();
-                  return Container();
-                },
-              )
+              const SizedBox(
+                height: 20.0,
+              ),
+              RaisedButton(
+                  child: const Text('Add'),
+                  onPressed: () {
+                    if (_formKey.currentState.validate()) {
+                      _noteBloc.add(AddAWord(word: word));
+                      Navigator.of(context).pop();
+                    }
+                  })
             ],
           ),
-          const SizedBox(
-            height: 20.0,
-          ),
-          RaisedButton(
-              child: const Text('Add'),
-              onPressed: () {
-                if (_formKey.currentState.validate()) {
-                  _noteBloc.add(AddAWord(word: word));
-                  Navigator.of(context).pop();
-                }
-              })
-        ],
+        ),
       ),
     );
   }

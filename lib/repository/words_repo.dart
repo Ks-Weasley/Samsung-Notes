@@ -25,7 +25,7 @@ class WordsRepository {
   List<String> matchingWords(String word) {
     final List<String> result = <String>[];
     for (String element in words) {
-      if (element.indexOf(word) == 0)
+      if (element.toLowerCase().indexOf(word.toLowerCase()) == 0)
         result.add(element);
     }
     return result;
