@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:samsungnotes/bloc/notes_bloc.dart';
-import 'package:samsungnotes/bloc/notes_events.dart';
+import 'package:samsungnotes/NoteBloc/notes_bloc.dart';
+import 'package:samsungnotes/NoteBloc/notes_events.dart';
 
 class WordListTile extends StatelessWidget {
-  final String word;
-
   const WordListTile({Key key, this.word}) : super(key: key);
+
+  final String word;
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +17,12 @@ class WordListTile extends StatelessWidget {
       child: ListTile(
         title: Text(word),
         trailing: GestureDetector(
-          onTap: () async{
-             await _noteBloc.add(DeleteAWord(word: word));
-          },
+            onTap: () {
+              _noteBloc.add(DeleteAWord(word: word));
+            },
             child: Icon(
-          Icons.delete,
-        )),
+              Icons.delete,
+            )),
       ),
     );
   }
