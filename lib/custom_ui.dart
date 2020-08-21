@@ -5,7 +5,7 @@ class MyPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     // TODO: implement paint
-    Paint paint = Paint()..color = Colors.amberAccent;
+    final Paint paint = Paint()..color = Colors.amberAccent;
     canvas.drawArc(
       Rect.fromCenter(
         center: Offset(size.height / 2, size.width / 2),
@@ -50,7 +50,7 @@ class MyPainter extends CustomPainter {
             Center(
               child: CustomPaint(
                 painter: MyPainter(),
-                size: Size(50, 50),
+                size: const Size(50, 50),
               ),
             ),
           ],

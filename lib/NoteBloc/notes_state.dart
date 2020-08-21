@@ -1,5 +1,7 @@
 abstract class NoteState {}
 
+class DatabaseInitialized extends NoteState{}
+
 class Empty extends NoteState {}
 
 class WordFound extends NoteState {}
@@ -20,3 +22,5 @@ class Searching extends NoteState{
 
   final List<String> words;
 }
+
+class Loading extends NoteState{}

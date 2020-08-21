@@ -3,6 +3,8 @@ import 'package:meta/meta.dart';
 
 abstract class NoteEvents{}
 
+class InitializeDatabase extends NoteEvents{}
+
 class AddAWord extends NoteEvents{
   AddAWord({@required this.word});
 

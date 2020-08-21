@@ -14,7 +14,7 @@ class WordListBuilder extends StatelessWidget {
           return Column(
             children: <Widget>[
               WordListTile(word: wordList[index]),
-              Divider(
+              const Divider(
                 thickness: 2.0,
                 color: Colors.amberAccent,
               )

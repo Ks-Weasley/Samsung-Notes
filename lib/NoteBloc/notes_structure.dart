@@ -1,4 +1,5 @@
 class Notes {
-  List<String> words;
+  Notes({this.word});
+  final String word;
 
 }
